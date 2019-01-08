@@ -1,5 +1,5 @@
 // Creating map object
-var myMap = L.map("map", {
+var choroMap = L.map("choromap", {
   center: [40.7128, -74.0059],
   zoom: 11
 });
@@ -10,22 +10,21 @@ L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
   maxZoom: 18,
   id: "mapbox.streets",
   accessToken: API_KEY
-}).addTo(myMap);
+}).addTo(chloroMap);
 
 // Link to GeoJSON
-var APILink = "http://data.beta.nyc//dataset/d6ffa9a4-c598-4b18-8caf-14abde6a5755/resource/74cdcc33-512f-439c-" +
-"a43e-c09588c4b391/download/60dbe69bcd3640d5bedde86d69ba7666geojsonmedianhouseholdincomecensustract.geojson";
+var anemAvgsCsv = "anem_stateavgs.csv";
 
-var geojson;
+var geocsv;
 
 // Grab data with d3
-d3.json(APILink, function(data) {
+d3.csv(anemAvgsCsv, function(data) {
 
   // Create a new choropleth layer
-  geojson = L.choropleth(data, {
+  geocsv = L.choropleth(data, {
 
     // Define what  property in the features to use
-    valueProperty: "MHI",
+    valueProperty: "StateAvg",
 
     // Set color scale
     scale: ["#ffffb2", "#b10026"],
@@ -44,10 +43,10 @@ d3.json(APILink, function(data) {
 
     // Binding a pop-up to each layer
     onEachFeature: function(feature, layer) {
-      layer.bindPopup(feature.properties.LOCALNAME + ", " + feature.properties.State + "<br>Median Household Income:<br>" +
-        "$" + feature.properties.MHI);
+      layer.bindPopup(feature.properties.State + "<br>Median Household Income:<br>" +
+        "$" + feature.properties.StateAvgs);
     }
-  }).addTo(myMap);
+  }).addTo(choroMap);
 
   // Set up the legend
   var legend = L.control({ position: "bottomright" });
@@ -75,6 +74,6 @@ d3.json(APILink, function(data) {
   };
 
   // Adding legend to the map
-  legend.addTo(myMap);
+  legend.addTo(choroMap);
 
 });

@@ -8,11 +8,11 @@ create table anem_tbl (
     FacilityName varchar(100),
     CCN INT,
     City varchar(100),
-    State varchar(100),
+    state varchar(100),
     Zipcode INT,
     MeasureName varchar(100),
     AnemiaScore INT,
-    StateAvg INT,
+    value INT,
     NationalAvg INT,
     ZipLat INT,
     ZipLon INT,
@@ -25,7 +25,7 @@ SELECT * FROM anem_tbl;
 drop table if exists anem_stateavgs_tbl;
 create table anem_stateavgs_tbl (
 	id INT auto_increment PRIMARY KEY,
-    StateAvg INT,
+    value INT,
     NationalAvg INT,
     StateLat INT,
     StateLon INT
@@ -39,11 +39,11 @@ create table depr_tbl (
     FacilityName varchar(100),
     CCN INT,
     City varchar(100),
-    State varchar(100),
+    state varchar(100),
     Zipcode INT,
     MeasureName varchar(100),
     DepressionScore INT,
-    StateAvg INT,
+    value INT,
     NationalAvg INT,
     ZipLat INT,
     ZipLon INT,
@@ -56,7 +56,7 @@ SELECT * FROM depr_tbl;
 drop table if exists depr_stateavgs_tbl;
 create table depr_stateavgs_tbl (
 	id INT auto_increment PRIMARY KEY,
-    StateAvg INT,
+    value INT,
     NationalAvg INT,
     StateLat INT,
     StateLon INT
