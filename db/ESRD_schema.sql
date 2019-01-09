@@ -33,6 +33,16 @@ create table anem_stateavgs_tbl (
     
 SELECT * FROM anem_stateavgs_tbl;
 
+drop table if exists anem_stateoutliers_tbl;
+create table anem_stateoutliers_tbl (
+	id INT auto_increment PRIMARY KEY,
+    value INT,
+    StateLat INT,
+    StateLon INT
+    );
+    
+SELECT * FROM anem_stateoutliers_tbl;
+
 drop table if exists depr_tbl;
 create table depr_tbl (
 	id INT auto_increment PRIMARY KEY,
