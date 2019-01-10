@@ -11,7 +11,7 @@ from flask_sqlalchemy import SQLAlchemy
 import pymysql
 pymysql.install_as_MySQLdb()
 
-connection_string ='root:tedly@localhost/esrd_db'
+connection_string ='root:<yourPwHere>@localhost/esrd_db'
 engine = create_engine(f'mysql://{connection_string}')
 
 Base = automap_base()
@@ -31,6 +31,11 @@ db=SQLAlchemy(app)
 def index():
     """Return the homepage."""
     return render_template("index.html")
+
+@app.route("/angular")
+def angular():
+    #return anguluar.html
+    return render_template('angular.html')
 
 @app.route('/anemia')
 def anemia():
