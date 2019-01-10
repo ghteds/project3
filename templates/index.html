@@ -1,42 +1,121 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="utf-8">
-<script src="https://d3js.org/d3.v4.min.js"></script>
-
-<!-- CSS Styling -->
-<style type="text/css">
-
-/* Legend Font Style */
-body {
-	font: 11px sans-serif;
-	background-color: #ffffff;
-}
-
-/* Legend Position Style */
-.legend {
-	position:absolute;
-	left:20px;
-	top:30px;
-}
-
-.axis text {
-	font: 10px sans-serif;
-}
-
-.axis line, .axis path {
-	fill: none;
-	stroke: #000;
-	shape-rendering: crispEdges;
-}
-
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Health Dashboard</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="main.css">
 </head>
+
 <body>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+                    aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">Health Dashboard </a>
+            </div>
 
-	<div class="choromap"></div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Measures
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="anemia.html">Anemia Measure</a>
+                            </li>
+                            <li>
+                                <a href="depression.html">Depression Measure</a>
+                            </li>
+                        
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="analogy.html">Analogy</a>
+                    </li>
+                    
+                </ul>
+            </div>
 
-<script type="text/javascript" src="../static/js/chorologic.js"></script>
+        
+    </nav>
+
+
+    <div class="container">
+        <div class="row row-grid">
+            <div class="col-md-8">
+                <div class="box box-left">
+                    <section id="intro">
+                        <h1>About</h1>
+                        <hr>
+                        <figure>
+                            <a target="_blank" href="Fig1.png">
+                                <img id="health-sample" src="Fig1.png" alt="Family health">
+                            </a>
+                        </figure>
+
+                        <section id="Summary">
+                                <p>   
+                                    
+                                    </p>
+                            <p>    What is ESRD QIP ?
+                            </p>
+
+                            <p>  The Centers for Medicare & Medicaid Services (CMS) administers the End-Stage Renal Disease (ESRD) Quality Incentive Program (QIP) to promote high-quality services in outpatient dialysis facilities treating patients with ESRD. 
+                                     The first of its kind in Medicare, this program changes the way CMS pays for the treatment of  patients with ESRD by linking a portion of payment directly to facilities’ performance on quality of care measures. 
+                                     These types of programs are known as “pay-for-performance” or “value-based purchasing” (VBP) programs. 
+
+                            </p>
+
+                            <p>  What are the benefits of ESRD QIP?
+                           </p>
+
+                           <p> The ESRD QIP will reduce payments to ESRD facilities that do not meet or exceed certain performance standards. The maximum payment reduction CMS can apply to any facility is two percent. This reduction will apply to all payments for services performed by the facility receiving the reduction during the applicable payment year (PY).
+
+                                Payment reductions result when a facility’s overall score on applicable measures does not meet established standards.
+                                 CMS publicly reports facility ESRD QIP scores; these scores are available online on Dialysis Facility Compare.
+                                  In addition, each facility is required to display a Performance Score Certificate that lists its Total Performance Score, as well as its performance on each of the quality measures identified for that year.
+                            </p>
+
+                            
+                                               
+                        </section>
+
+                    </section>
+                </div>
+            </div>
+
+           
+            <div class="col-md-4">
+                <div class="box box-right">
+                    <h2>Visualizations</h2>
+                    <hr>
+
+                    
+                    
+
+        </div>
+    </div>
+
+
+
+    <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous">
+        </script>
 
 </body>
+
 </html>
