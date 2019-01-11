@@ -8,12 +8,46 @@
     <title>Document</title>
     
 </head>
-    
+ 
 <body>
     <h1>Angular</h1>
-    <div ng-app="">
-        <p>Name:<input type="text" ng-model="name"</p>
-        <p ng-bind="name"></p>
+
+    <div ng-app="myApp" ng-controller='myCtrl' >
+        <select ng-model='selectStates' ng-options='x for x in states'></select>
+        <select ng-model='selectFacility' ng-options='x for x in facilities'></select>
     </div>
+    <script>
+        
+        var app= angular.module('myApp',[]);
+        app.controller('myCtrl', function($scope, $http){
+            $http.get("http://localhost:5000/states").then(function(response){
+                $scope.states=response.data;
+                //console.log(response);
+            })
+            var app= angular.module('myApp',[]);     
+        
+                //console.log(response);
+            $http.get('http://localhost:5000/testanemia').then(function(response){
+                $scope.facility = response.data.Facility
+                //$scope.state2 = response.data.State
+                //$scope.anemiaScore = response.data.AnemiaScore
+                $scope.facilities=function() {
+                    return $scope.facility
+                }     //+ response.data
+               /* $scope.fullName = function() {
+                    return $scope.firstName + " " + $scope.lastName;
+        */
+                //console.log(data)
+            })
+        })  
+            
+            
+        //
+        /*
+        url='http://localhost:5000/states'
+        */
+
+    </script>
+  
 </body>
 </html>

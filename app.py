@@ -11,20 +11,26 @@ from flask_sqlalchemy import SQLAlchemy
 import pymysql
 pymysql.install_as_MySQLdb()
 
-connection_string ='root:<yourPwHere>@localhost/esrd_db'
+connection_string ='root:tedly@localhost/esrd_db'
 engine = create_engine(f'mysql://{connection_string}')
 
 Base = automap_base()
 Base.prepare(engine, reflect=True)
 
+#flask-cors to handle cors errors
+# from flask_cors import CORS
+
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = f'mysql://{connection_string}'
+db=SQLAlchemy(app)
+# CORS(app)
+
 
 Anemia = Base.classes.anem_tbl
 Depression = Base.classes.depr_tbl
    
-db=SQLAlchemy(app)
+
 
 
 @app.route("/")
@@ -55,7 +61,21 @@ def anemia():
         'ZipLat':df['ZipLat'].tolist(),
         'ZipLon':df['ZipLon'].tolist(),
         'StateLat':df['StateLat'].tolist(),
-        'StateLon':df['StateLon'].tolist(),
+        'StateLon':df['StateLon'].tolist()
+    }
+    
+    return  jsonify(data)
+
+@app.route('/testanemia')
+def testanemia():
+    #result=db.session.query(Anemia).statement
+
+    #df = pd.read_sql_query(result, db.session.bind)
+
+    data = {
+        'Facility': ["SAN FRANCISCO DIALYSIS CENTER","CITRUS DIALYSIS CENTER","RAI PERALTA"],    
+        'State':['CA','TX','GA'],        
+        'AnemiaScore': [10,10,10]        
     }
     
     return  jsonify(data)
@@ -83,6 +103,26 @@ def depression():
     
     return  jsonify(data)
 
+@app.route('/states')
+def states():
+    result=db.session.query(Anemia.State).distinct().all()
+    # print(result)
+    # df = pd.read_sql_query(result, columns=['State']) #db.session.bind)
+    # print(df)
+    data = {
+        'State':result,       
+    }    
+    return  jsonify(result)
+@app.route('/teststates')
+def teststates():
+    result=db.session.query(Anemia.State).distinct().all()
+    # print(result)
+    # df = pd.read_sql_query(result, columns=['State']) #db.session.bind)
+    # print(df)
+    data = {
+        'State':result,       
+    }    
+    return  jsonify(result)
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
