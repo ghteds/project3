@@ -1,53 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+      
 <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-    
+    <!--<script src="/static/js/unique.js"></script>-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-filter/0.5.8/angular-filter.min.js"></script>
+    <!--<script src="http://cdnjs.cloudflare.com/ajax/libs/angular-ui/0.4.0/angular-ui.min.js"></script>-->
 </head>
  
 <body>
+        <script>
+                //var app = angular.module('myApp', ['angular.filter']);
+                /*angular.module('myApp', []).config(function($interpolateProvider){
+                    $interpolateProvider.startSymbol('{[').endSymbol(']}');
+                });*/
+                /*
+                app.filter('unique', function() {
+                    return function (arr, field) {
+                        return _.uniq(arr, function(a) { return a[field]; });
+                    };
+                });
+                */
+                var app= angular.module('myApp',['angular.filter']);
+                app.controller('myCtrl',  function ($scope, $http){
+                    $http.get("http://localhost:5000/teststates").then(function(response){
+                        $scope.states=response.data;
+                        console.log(response);
+                    })
+                    //var app= angular.module('myApp',[]);     
+                
+                        //console.log(response);
+                    $http.get('http://localhost:5000/anemia').then(function(response){
+                        //console.log(response.data.State)
+                        //$scope.states =response.data.State
+                        $scope.all  = response.data
+                        //$scope.facility = response.data.Facility
+                        //$scope.state2 = response.data.State
+                        //console.log(states)
+                        //console.log($scope.state2)
+                        //$scope.anemiaScore = response.data.AnemiaScore
+                        /*$scope.facilities = function() {
+                            return $scope.facility
+                        }     //+ response.data
+                        */
+                       /* $scope.fullName = function() {
+                            return $scope.firstName + " " + $scope.lastName;
+                */
+                        //console.log(data)
+        
+                    })
+                })  
+                    
+                    
+                //
+                /*
+                url='http://localhost:5000/states'
+                */
+        
+            </script>
     <h1>Angular</h1>
-
+    <!--angular.module('myApp',['ui.directive', 'ui.filters']);
+    angular-ui is referred? <script src="http://cdnjs.cloudflare.com/ajax/libs/angular-ui/0.4.0/angular-ui.min.js"></script>
+        -->
     <div ng-app="myApp" ng-controller='myCtrl' >
-        <select ng-model='selectStates' ng-options='x for x in states'></select>
-        <select ng-model='selectFacility' ng-options='x for x in facilities'></select>
+        <select ng-model='selectState' ng-options="x for x in states"> <!--|unique:'State'" >-->
+            <option ng-disable='true' ng-selected='true' value="">Select State</option>
+        </select>
+        <select ng-model='selectFacility' ng-options='x for x in all.Facility'> <!--|filter:{State:selectState}'>-->
+            <option ng-disable='true' ng-selected='true' value="">Select Facility</option>
+        </select>
+       
+        
+        <!--
+        <ul>
+            <li ng-repeat='x in state2 track by $index'>
+                {{ '{{x}}' }}
+            </li>
+        </ul>
+        -->
     </div>
-    <script>
-        
-        var app= angular.module('myApp',[]);
-        app.controller('myCtrl', function($scope, $http){
-            $http.get("http://localhost:5000/states").then(function(response){
-                $scope.states=response.data;
-                //console.log(response);
-            })
-            var app= angular.module('myApp',[]);     
-        
-                //console.log(response);
-            $http.get('http://localhost:5000/testanemia').then(function(response){
-                $scope.facility = response.data.Facility
-                //$scope.state2 = response.data.State
-                //$scope.anemiaScore = response.data.AnemiaScore
-                $scope.facilities=function() {
-                    return $scope.facility
-                }     //+ response.data
-               /* $scope.fullName = function() {
-                    return $scope.firstName + " " + $scope.lastName;
-        */
-                //console.log(data)
-            })
-        })  
-            
-            
-        //
-        /*
-        url='http://localhost:5000/states'
-        */
 
-    </script>
+    
   
 </body>
 </html>
