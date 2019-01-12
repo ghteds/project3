@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+	crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+	crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+	crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+	crossorigin="anonymous">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.13.0/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.1/d3-tip.min.js"></script> -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<style type="text/css">
+
+/* Legend Font Style */
+body {
+	font: 11px sans-serif;
+	background-color: #ffffff;
+}
+
+/* Legend Position Style */
+.legend {
+	position:absolute;
+	left:20px;
+	top:50%;
+}
+
+.axis text {
+	font: 10px sans-serif;
+}
+
+.axis line, .axis path {
+	fill: none;
+	stroke: #000;
+	shape-rendering: crispEdges;
+}
+
+div.tooltip {
+  position: absolute;
+  left:20px;
+	top:100%;
+  text-align: center;
+  width: 70px;
+  height: 40px;
+  padding: 2px;
+  font: 12px sans-serif;
+  background: lightsteelblue;
+  border: 0px;
+  border-radius: 8px;
+  pointer-events: none;
+}
+
+</style>
+</head>
+
+
+
+<body>
+
+
+	<div class="jumbotron text-center">
+      <h1>Health Quality</h1>
+      <button type="button" name="anemiabutton" onclick="buildAnemiaChoro()">Anemia Avgs</button><br>
+      <button type="button" name="anemiabutton" onclick="buildDepressionChoro()">Depression Avgs</button><br>
+
+
+      <!-- <p><a class="btn btn-primary btn-lg" href="/anemia" role="button">Anemia</a></p>
+			<p><a class="btn btn-primary btn-lg" href="/depression" role="button">Depression</a></p>
+      <p><a class="btn btn-primary btn-lg" href="/anemiaavgs" role="button">Anemia Avgs</a></p>
+      <p><a class="btn btn-primary btn-lg" href="/depressionavgs" role="button">Depression Avgs</a></p> -->
+  </div>
+
+
+<div id="choropleth"></div>
+<hr>
+
+<script type="text/javascript" src="../static/js/app.js"></script>
+
+<!-- d3.json("/anemia").then(function(datacsv) {return datacsv;}); -->
+
+</body>
+</html>

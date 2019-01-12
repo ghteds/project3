@@ -1,0 +1,2246 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>Health Dashboard</title>
+
+		<!-- Leaflet JS & CSS -->
+		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.3/dist/leaflet.css"
+		integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ=="
+		crossorigin=""/>
+		<script src="https://unpkg.com/leaflet@1.3.3/dist/leaflet.js"
+		integrity="sha512-tAGcCfR4Sc5ZP5ZoVz0quoZDYX5aCtEm/eu1KhSLj2c9eFrylXZknQYmxUssFaVJKvvc0dJQixhGjG2yXWiV9Q=="
+		crossorigin=""></script>
+
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="../static/css/main.css">
+		<link rel="stylesheet" href="../static/css/animate.css">
+
+		<!-- Marker Cluster JS & CSS -->
+    <script type="text/javascript" src="https://unpkg.com/leaflet.markercluster@1.0.3/dist/leaflet.markercluster.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/leaflet.markercluster@1.0.3/dist/MarkerCluster.css">
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/leaflet.markercluster@1.0.3/dist/MarkerCluster.Default.css">
+
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+		<script src="../static/js/wow.min.js"></script>
+							<script>
+							new WOW().init();
+							</script>
+
+</head>
+
+<body>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+                    aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">Health Dashboard </a>
+            </div>
+
+            <div class="collapse navbar-collapse" id="navbar collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Measures
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="anemia.html">Anemia Dataset</a>
+                            </li>
+                            <li>
+                                <a href="/depression">Depression Dataset</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="https://www.cms.gov/Medicare/Quality-Initiatives-Patient-Assessment-Instruments/ESRDQIP/index.html">Learn More</a>
+                    </li>
+                </ul>
+            </div>
+    </nav>
+
+
+    <div class="container">
+        <div class="row row-grid">
+            <div class="col-md-12">
+                <div class="box box-left">
+                    <section id="intro">
+                        <h1 class="wow fadeInDown">About</h1>
+                        <hr>
+                        <figure>
+                            <a>
+                                <!-- <img class="centeredimg" id="health-sample" src="./images/test1.jpg" alt="Family health"> -->
+                            </a>
+                        </figure>
+
+                        <section id="Summary" class="wow fadeInDown">
+                                <p>
+
+                                    </p>
+                            <p class="wow fadeInDown">    What is ESRD QIP ?
+                            </p>
+
+                            <p class="wow fadeInDown">  The Centers for Medicare & Medicaid Services (CMS) administers the End-Stage Renal Disease (ESRD) Quality Incentive Program (QIP) to promote high-quality services in outpatient dialysis facilities treating patients with ESRD.
+                                     The first of its kind in Medicare, this program changes the way CMS pays for the treatment of  patients with ESRD by linking a portion of payment directly to facilities’ performance on quality of care measures.
+                                     These types of programs are known as “pay-for-performance” or “value-based purchasing” (VBP) programs.
+
+                            </p>
+
+                            <p class="wow fadeInDown">  What are the benefits of ESRD QIP?
+                           </p>
+
+                           <p class="wow fadeInDown"> The ESRD QIP will reduce payments to ESRD facilities that do not meet or exceed certain performance standards. The maximum payment reduction CMS can apply to any facility is two percent. This reduction will apply to all payments for services performed by the facility receiving the reduction during the applicable payment year (PY).
+
+                                Payment reductions result when a facility’s overall score on applicable measures does not meet established standards.
+                                 CMS publicly reports facility ESRD QIP scores; these scores are available online on Dialysis Facility Compare.
+                                  In addition, each facility is required to display a Performance Score Certificate that lists its Total Performance Score, as well as its performance on each of the quality measures identified for that year.
+                            </p>
+                        </section>
+                    </section>
+                </div>
+            </div>
+        </div>
+
+        <div class="row row-grid">
+          <div class="col-md-12">
+            <div class="jumbotron text-center">
+                <h2 class="wow fadeInDown">Explore ESRD Health Quality | Outliers</h2>
+                <h3 class="wow fadeInDown">Click a button to visualize a different dataset.</h3>
+                <button type="button" name="anemiabutton" onclick="buildAnemiaData()">Anemia Avgs</button><br>
+                <button type="button" name="anemiabutton" onclick="buildDepressionData()">Depression Avgs</button><br>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="row row-grid">
+            <div class="col-md-12">
+                <div class="box box-right">
+                    <h2 class="wow fadeInDown">Visualizations</h2>
+                    <hr>
+
+                    <div id="choropleth" class="wow fadeInDown"></div>
+                    <hr>
+                </div>
+            </div>
+          </div>
+
+          <div class="row row-grid">
+              <div class="col-md-12">
+                  <div class="box box-right">
+										<div id="map"></div>
+                    <hr>
+                  </div>
+              </div>
+            </div>
+
+            <div class="row row-grid">
+                <div class="col-md-12">
+                    <div class="box box-right">
+                    <h2 class="wow slideInLeft">Search by state or city to view reporting clinics, and how their anemia scores compare to the state average.</h2>
+										<input type="text" id="anemStateInput" class="wow slideInLeft" onkeyup="anemStateFunction()" placeholder="Search for a state abbr.."><br>
+                    <input type="text" id="anemCityInput" class="wow slideInLeft" onkeyup="anemCityFunction()" placeholder="Search for a city..">
+                    			<table border=1 id="anemTable">
+                    				<thead>
+                    					<tr class="header">
+                    						<th>id</th>
+                    						<th>FacilityName</th>
+                    						<th>City</th>
+                    						<th>state</th>
+                    						<th>AnemiaScore</th>
+                    						<th>StateAvg</th>
+                    					</tr>
+                    				</thead>
+                    				<tbody>
+                    					<tr>
+                    						<td>26</td>
+                    						<td>FMC JACKSON (TOMBIGBEE)</td>
+                    						<td>JACKSON</td>
+                    						<td>AL</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>33</td>
+                    						<td>RCG ANDALUSIA</td>
+                    						<td>ANDALUSIA</td>
+                    						<td>AL</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>102</td>
+                    						<td>TUSCALOOSA NEPHROLOGY ASSOC HOME DIALYSIS</td>
+                    						<td>TUSCALOOSA</td>
+                    						<td>AL</td>
+                    						<td>6</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>139</td>
+                    						<td>FRESENIUS MEDICAL CARE BIRMINGHAM HOME, LLC</td>
+                    						<td>BIRMINGHAM</td>
+                    						<td>AL</td>
+                    						<td>8</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>203</td>
+                    						<td>DAVITA - JACKSONVILLE CENTRAL DIALYSIS CTR</td>
+                    						<td>JACKSONVILLE</td>
+                    						<td>AR</td>
+                    						<td>8</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>276</td>
+                    						<td>032535 HOME DIALYSIS OF MESA (FMC)</td>
+                    						<td>MESA</td>
+                    						<td>AZ</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>333</td>
+                    						<td>032613 NORTHWEST TUCSON DIALYSIS (FMC)</td>
+                    						<td>TUCSON</td>
+                    						<td>AZ</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>354</td>
+                    						<td>032635 GILBERT DIALYSIS (FMC)</td>
+                    						<td>GILBERT</td>
+                    						<td>AZ</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>362</td>
+                    						<td>032643 EAST TUCSON (FMC)</td>
+                    						<td>TUCSON</td>
+                    						<td>AZ</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>399</td>
+                    						<td>MOBILE DIALYSIS SERVICES, INC. (COMPTON)</td>
+                    						<td>COMPTON</td>
+                    						<td>CA</td>
+                    						<td>0</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>447</td>
+                    						<td>FMC-UNIVERSITY DIALYSIS CENTER OF ORANGE</td>
+                    						<td>ORANGE</td>
+                    						<td>CA</td>
+                    						<td>6</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>466</td>
+                    						<td>HUNTINGTON DIALYSIS CENTER</td>
+                    						<td>PASADENA</td>
+                    						<td>CA</td>
+                    						<td>3</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>516</td>
+                    						<td>CAMERON PARK DIALYSIS</td>
+                    						<td>CAMERON PARK</td>
+                    						<td>CA</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>615</td>
+                    						<td>DAVITA-SAN LUIS OBISPO DIALYSIS</td>
+                    						<td>SAN LUIS OBISPO</td>
+                    						<td>CA</td>
+                    						<td>8</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>665</td>
+                    						<td>EAST PALMDALE DIALYSIS CENTER</td>
+                    						<td>PALMDALE</td>
+                    						<td>CA</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>670</td>
+                    						<td>FLORENCE DIALYSIS CENTER</td>
+                    						<td>LOS ANGELES</td>
+                    						<td>CA</td>
+                    						<td>0</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>748</td>
+                    						<td>HOME DIALYSIS THERAPIES OF SAN DIEGO-NORTH</td>
+                    						<td>SAN DIEGO</td>
+                    						<td>CA</td>
+                    						<td>8</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>751</td>
+                    						<td>HOME DIALYSIS THERAPIES OF SAN DIEGO-SOUTH</td>
+                    						<td>CHULA VISTA</td>
+                    						<td>CA</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>755</td>
+                    						<td>WELLBOUND OF SANTA ROSA</td>
+                    						<td>SANTA ROSA</td>
+                    						<td>CA</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>795</td>
+                    						<td>QUOTIDIAN HOME DIALYSIS CLINIC</td>
+                    						<td>LA HABRA</td>
+                    						<td>CA</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>798</td>
+                    						<td>ANTELOPE VALLEY KIDNEY INSTITUTE</td>
+                    						<td>LANCASTER</td>
+                    						<td>CA</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>813</td>
+                    						<td>CORNERHOUSE DIALYSIS CENTER</td>
+                    						<td>SAN JOSE</td>
+                    						<td>CA</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>826</td>
+                    						<td>FMC-MEADOWS FIELD</td>
+                    						<td>BAKERSFIELD</td>
+                    						<td>CA</td>
+                    						<td>7</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>829</td>
+                    						<td>DAVITA-RIVERSIDE PD CENTRAL</td>
+                    						<td>RIVERSIDE</td>
+                    						<td>CA</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>860</td>
+                    						<td>U.S. RENAL CARE VERDUGO HILLS DIALYSIS</td>
+                    						<td>GLENDALE</td>
+                    						<td>CA</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>974</td>
+                    						<td>LAUREL CANYON DIALYSIS, LLC</td>
+                    						<td>SUN VALLEY</td>
+                    						<td>CA</td>
+                    						<td>6</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>1036</td>
+                    						<td>062555 KIDNEY CENTER OF LAFAYETTE (ARA)</td>
+                    						<td>LAFAYETTE</td>
+                    						<td>CO</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>1037</td>
+                    						<td>062556 KIDNEY CENTER OF LAKEWOOD (ARA)</td>
+                    						<td>DENVER</td>
+                    						<td>CO</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>1047</td>
+                    						<td>062567 MESA COUNTY DIALYSIS (DVA)</td>
+                    						<td>GRAND JUNCTION</td>
+                    						<td>CO</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>1058</td>
+                    						<td>062578 -  WEST HAMPDEN DIALYSIS (FMC)</td>
+                    						<td>ENGLEWOOD</td>
+                    						<td>CO</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>1071</td>
+                    						<td>NEW HAVEN HOME DIALYSIS</td>
+                    						<td>NEW HAVEN</td>
+                    						<td>CT</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>1147</td>
+                    						<td>BMA - DUPONT CIRCLE</td>
+                    						<td>WASHINGTON</td>
+                    						<td>DC</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>1199</td>
+                    						<td>PHYSICIANS DIALYSIS TRINITY</td>
+                    						<td>TRINITY</td>
+                    						<td>FL</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>1210</td>
+                    						<td>FMC - SANFORD</td>
+                    						<td>SANFORD</td>
+                    						<td>FL</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>1298</td>
+                    						<td>WEST TALLAHASSEE DIALYSIS</td>
+                    						<td>TALLAHASSEE</td>
+                    						<td>FL</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>1339</td>
+                    						<td>SEBASTIAN DIALYSIS</td>
+                    						<td>SEBASTIAN</td>
+                    						<td>FL</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>1362</td>
+                    						<td>ORANGE PARK KIDNEY CENTER</td>
+                    						<td>ORANGE PARK</td>
+                    						<td>FL</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>1397</td>
+                    						<td>FMC-MIAMI SHORES, LLC</td>
+                    						<td>MIAMI SHORES</td>
+                    						<td>FL</td>
+                    						<td>6</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>1404</td>
+                    						<td>WESTON DIALYSIS CENTER</td>
+                    						<td>WESTON</td>
+                    						<td>FL</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>1412</td>
+                    						<td>ADVANCED RENAL CARE</td>
+                    						<td>TAMPA</td>
+                    						<td>FL</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>1439</td>
+                    						<td>DELRAY BEACH DIALYSIS CENTER LLC</td>
+                    						<td>DELRAY BEACH</td>
+                    						<td>FL</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>1469</td>
+                    						<td>WESTERN COMMUNITY DIALYSIS CENTER LLC</td>
+                    						<td>ROYAL PALM BEACH</td>
+                    						<td>FL</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>1477</td>
+                    						<td>GREATER TAMPA AT HOME</td>
+                    						<td>TAMPA</td>
+                    						<td>FL</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>1506</td>
+                    						<td>NEW START DIALYSIS CENTER LLC</td>
+                    						<td>NORTH MIAMI</td>
+                    						<td>FL</td>
+                    						<td>0</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>1510</td>
+                    						<td>FMC - CLERMONT EAST</td>
+                    						<td>CLERMONT</td>
+                    						<td>FL</td>
+                    						<td>8</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>1523</td>
+                    						<td>PALATKA DIALYSIS</td>
+                    						<td>PALATKA</td>
+                    						<td>FL</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>1527</td>
+                    						<td>PROFESSIONAL DIALYSIS CENTER</td>
+                    						<td>PEMBROKE PINES</td>
+                    						<td>FL</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>1544</td>
+                    						<td>NXSTAGE KIDNEY CARE - JACKSONVILLE</td>
+                    						<td>JACKSONVILLE</td>
+                    						<td>FL</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>1578</td>
+                    						<td>DIALYZE DIRECT FL</td>
+                    						<td>BOCA RATON</td>
+                    						<td>FL</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>1589</td>
+                    						<td>WEST ORANGE MAITLAND DIALYSIS CENTER LLC</td>
+                    						<td>ORLANDO</td>
+                    						<td>FL</td>
+                    						<td>7</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>1590</td>
+                    						<td>WEST ORANGE WINTER GARDEN DIALYSIS CENTER LLC</td>
+                    						<td>WINTER GARDEN</td>
+                    						<td>FL</td>
+                    						<td>7</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>1622</td>
+                    						<td>US RENAL CARE DALTON DIALYSIS</td>
+                    						<td>DALTON</td>
+                    						<td>GA</td>
+                    						<td>7</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>1683</td>
+                    						<td>RCG LAWRENCEVILLE</td>
+                    						<td>LAWRENCEVILLE</td>
+                    						<td>GA</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>1708</td>
+                    						<td>FAYETTEVILLE DIALYSIS</td>
+                    						<td>FAYETTEVILLE</td>
+                    						<td>GA</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>1726</td>
+                    						<td>CUMMING DIALYSIS</td>
+                    						<td>CUMMING</td>
+                    						<td>GA</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>1733</td>
+                    						<td>GAINESVILLE DIALYSIS</td>
+                    						<td>GAINESVILLE</td>
+                    						<td>GA</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>1743</td>
+                    						<td>SWEETWATER DIALYSIS</td>
+                    						<td>LITHIA SPRINGS</td>
+                    						<td>GA</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>1744</td>
+                    						<td>US RENAL CARE HAWKINSVILLE</td>
+                    						<td>HAWKINSVILLE</td>
+                    						<td>GA</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>1778</td>
+                    						<td>DIALYSIS OF LITHONIA</td>
+                    						<td>DECATUR</td>
+                    						<td>GA</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>1849</td>
+                    						<td>DAVITA AUSTELL</td>
+                    						<td>AUSTELL</td>
+                    						<td>GA</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>1856</td>
+                    						<td>DSI MACON PINE STREET DIALYSIS</td>
+                    						<td>MACON</td>
+                    						<td>GA</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>1885</td>
+                    						<td>PARKER DIALYSIS, LLC</td>
+                    						<td>MONROE</td>
+                    						<td>GA</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>1911</td>
+                    						<td>INNOVATIVE HOME DIALYSIS OF GEORGIA, LLC</td>
+                    						<td>CANTON</td>
+                    						<td>GA</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>1918</td>
+                    						<td>FRESENIUS MEDICAL CARE JONESBORO, LLC</td>
+                    						<td>JONESBORO</td>
+                    						<td>GA</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>1925</td>
+                    						<td>FRESENIUS MEDICAL CARE AUGUSTA HOME</td>
+                    						<td>AUGUSTA</td>
+                    						<td>GA</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>1981</td>
+                    						<td>YELLOWSTONE DIALYSIS CENTER</td>
+                    						<td>REXBURG</td>
+                    						<td>ID</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>1983</td>
+                    						<td>LIBERTY DIALYSIS - MERIDIAN</td>
+                    						<td>MERIDIAN</td>
+                    						<td>ID</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>1992</td>
+                    						<td>LIBERTY DIALYSIS - SANDPOINT</td>
+                    						<td>SANDPOINT</td>
+                    						<td>ID</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>2034</td>
+                    						<td>EMERALD DIALYSIS</td>
+                    						<td>CHICAGO</td>
+                    						<td>IL</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>2044</td>
+                    						<td>CIRCLE MEDICAL MANAGEMENT</td>
+                    						<td>CHICAGO</td>
+                    						<td>IL</td>
+                    						<td>7</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>2093</td>
+                    						<td>FMC - ELK GROVE HOME DIALYSIS CENTER</td>
+                    						<td>ELK GROVE VILLAGE</td>
+                    						<td>IL</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>2097</td>
+                    						<td>DAVITA - CARPENTERSVILLE</td>
+                    						<td>CARPENTERSVILLE</td>
+                    						<td>IL</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>2113</td>
+                    						<td>TRI CITIES DIALYSIS LLC</td>
+                    						<td>GENEVA</td>
+                    						<td>IL</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>2122</td>
+                    						<td>SHELBYVILLE COMMUNITY DIALYSIS</td>
+                    						<td>SHELBYVILLE</td>
+                    						<td>IL</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>2141</td>
+                    						<td>MAPLE AVENUE KIDNEY CENTER</td>
+                    						<td>OAK PARK</td>
+                    						<td>IL</td>
+                    						<td>8</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>2176</td>
+                    						<td>AFFILIATED HOME DIALYSIS, LLC</td>
+                    						<td>WASHINGTON</td>
+                    						<td>IL</td>
+                    						<td>7</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>2186</td>
+                    						<td>FMC - HOME DIALYSIS NETWORK INC.</td>
+                    						<td>JOLIET</td>
+                    						<td>IL</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>2213</td>
+                    						<td>LAKEVIEW HOME DIALYSIS</td>
+                    						<td>CHICAGO</td>
+                    						<td>IL</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>2232</td>
+                    						<td>VILLA PARK HOME DIALYSIS</td>
+                    						<td>VILLA PARK</td>
+                    						<td>IL</td>
+                    						<td>2</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>2249</td>
+                    						<td>HOME DIALYSIS SERVICES ELGIN LLC</td>
+                    						<td>CRYSTAL LAKE</td>
+                    						<td>IL</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>2250</td>
+                    						<td>HOME DIALYSIS SEVICES HICKORY HILLS LLC</td>
+                    						<td>HICKORY HILLS</td>
+                    						<td>IL</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>2258</td>
+                    						<td>HOME DIALYSIS SERVICES OLYMPIA FIELDS LLC</td>
+                    						<td>OLYMPIA FIELDS</td>
+                    						<td>IL</td>
+                    						<td>8</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>2259</td>
+                    						<td>NORTHWESTERN MEDICAL FACILITY FOUNDATION DIALYSIS CENTER</td>
+                    						<td>CHICAGO</td>
+                    						<td>IL</td>
+                    						<td>4</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>2269</td>
+                    						<td>FMC - WEST FRANKFORT HOME THERAPIES</td>
+                    						<td>WEST FRANKFORT</td>
+                    						<td>IL</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>2325</td>
+                    						<td>FMC -  WABASH VALLEY</td>
+                    						<td>TERRE HAUTE</td>
+                    						<td>IN</td>
+                    						<td>8</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>2436</td>
+                    						<td>INDIANA DIALYSIS COMPANY</td>
+                    						<td>INDIANAPOLIS</td>
+                    						<td>IN</td>
+                    						<td>7</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>2473</td>
+                    						<td>FMC - DAVENPORT</td>
+                    						<td>DAVENPORT</td>
+                    						<td>IA</td>
+                    						<td>5</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>2490</td>
+                    						<td>FMC - BETTENDORF</td>
+                    						<td>BETTENDORF</td>
+                    						<td>IA</td>
+                    						<td>5</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>2498</td>
+                    						<td>COUNCIL BLUFFS DIALYSIS CENTER</td>
+                    						<td>COUNCIL BLUFFS</td>
+                    						<td>IA</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>2502</td>
+                    						<td>MAQUOKETA KIDNEY CENTER LLC</td>
+                    						<td>MAQUOKETA</td>
+                    						<td>IA</td>
+                    						<td>6</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>2510</td>
+                    						<td>FMC - MUSCATINE</td>
+                    						<td>MUSCATINE</td>
+                    						<td>IA</td>
+                    						<td>4</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>2609</td>
+                    						<td>FMC - CENTRAL RICHMOND</td>
+                    						<td>RICHMOND</td>
+                    						<td>KY</td>
+                    						<td>8</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>2667</td>
+                    						<td>FMC - OF HARDIN COUNTY</td>
+                    						<td>ELIZABETHTOWN</td>
+                    						<td>KY</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>2670</td>
+                    						<td>FMC - WINCHESTER</td>
+                    						<td>WINCHESTER</td>
+                    						<td>KY</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>2688</td>
+                    						<td>KUMAR DIALYSIS FLORENCE</td>
+                    						<td>FLORENCE</td>
+                    						<td>KY</td>
+                    						<td>3</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>2689</td>
+                    						<td>DIALYSIS SERVICES OF LONDON</td>
+                    						<td>LONDON</td>
+                    						<td>KY</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>2817</td>
+                    						<td>FMCNA - MID-CITY</td>
+                    						<td>BATON ROUGE</td>
+                    						<td>LA</td>
+                    						<td>5</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>2820</td>
+                    						<td>DAVITA - OAKWOOD DIALYSIS</td>
+                    						<td>GRETNA</td>
+                    						<td>LA</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>2821</td>
+                    						<td>FMCNA - O'NEAL LANE</td>
+                    						<td>DENHAM SPRINGS</td>
+                    						<td>LA</td>
+                    						<td>1</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>2825</td>
+                    						<td>FMCNA - RUSTON</td>
+                    						<td>RUSTON</td>
+                    						<td>LA</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>2830</td>
+                    						<td>FMCNA - SLIDELL</td>
+                    						<td>SLIDELL</td>
+                    						<td>LA</td>
+                    						<td>8</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>2888</td>
+                    						<td>GOOD SAMARITAN HOSPITAL</td>
+                    						<td>BALTIMORE</td>
+                    						<td>MD</td>
+                    						<td>7</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>2902</td>
+                    						<td>DAVITA - BERLIN DIALYSIS</td>
+                    						<td>BERLIN</td>
+                    						<td>MD</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>2933</td>
+                    						<td>FMC OF PORTER DIALYSIS - WHITE MARSH</td>
+                    						<td>NOTTINGHAM</td>
+                    						<td>MD</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>2974</td>
+                    						<td>PIKESVILLE DIALYSIS</td>
+                    						<td>BALTIMORE</td>
+                    						<td>MD</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>2989</td>
+                    						<td>ADVANCED DIALYSIS CENTER - ROCKVILLE</td>
+                    						<td>ROCKVILLE</td>
+                    						<td>MD</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>2992</td>
+                    						<td>FMC - SILVER SPRING</td>
+                    						<td>SILVER SPRING</td>
+                    						<td>MD</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>2996</td>
+                    						<td>FMC - TAKOMA PARK</td>
+                    						<td>HYATTSVILLE</td>
+                    						<td>MD</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>3002</td>
+                    						<td>COLDSPRINGS DIALYSIS, LLC</td>
+                    						<td>BALTIMORE</td>
+                    						<td>MD</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>3009</td>
+                    						<td>BROWNWOOD DIALYSIS LLC</td>
+                    						<td>ROCKVILLE</td>
+                    						<td>MD</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>3031</td>
+                    						<td>KIDNEY HOME CENTER, LLC</td>
+                    						<td>BALTIMORE</td>
+                    						<td>MD</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>3032</td>
+                    						<td>COURTLAND DIALYSIS, LLC</td>
+                    						<td>BALTIMORE</td>
+                    						<td>MD</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>3037</td>
+                    						<td>BALTIMORE COUNTY DIALYSIS, LLC</td>
+                    						<td>BALTIMORE</td>
+                    						<td>MD</td>
+                    						<td>8</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>3070</td>
+                    						<td>CHICOPEE DIALYSIS CENTER</td>
+                    						<td>CHICOPEE</td>
+                    						<td>MA</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>3082</td>
+                    						<td>NEW BEDFORD DIALYSIS</td>
+                    						<td>NORTH DARTMOUTH</td>
+                    						<td>MA</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>3089</td>
+                    						<td>YANKEE FAMILY DIALYSIS CENTER</td>
+                    						<td>GREENFIELD</td>
+                    						<td>MA</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>3131</td>
+                    						<td>UNIV OF MI DIALYSIS - ADULT</td>
+                    						<td>ANN ARBOR</td>
+                    						<td>MI</td>
+                    						<td>4</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>3132</td>
+                    						<td>NORTHERN MICHIGAN HOSPITAL</td>
+                    						<td>PETOSKEY</td>
+                    						<td>MI</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>3137</td>
+                    						<td>PORTAGE HEALTH DIALYSIS CTR</td>
+                    						<td>HANCOCK</td>
+                    						<td>MI</td>
+                    						<td>8</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>3188</td>
+                    						<td>DAVITA - GAYLORD DIALYSIS</td>
+                    						<td>GAYLORD</td>
+                    						<td>MI</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>3249</td>
+                    						<td>FMC - KALAMAZOO PD UNIT</td>
+                    						<td>KALAMAZOO</td>
+                    						<td>MI</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>3264</td>
+                    						<td>MACOMB REGIONAL DIALYSIS CENTER</td>
+                    						<td>CLINTON TOWNSHIP</td>
+                    						<td>MI</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>3311</td>
+                    						<td>HOME DIALYSIS SPECIALTY CENTER</td>
+                    						<td>SAINT CLAIR SHORES</td>
+                    						<td>MI</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>3313</td>
+                    						<td>DAVITA - BELTLINE HOME TRAINING</td>
+                    						<td>GRAND RAPIDS</td>
+                    						<td>MI</td>
+                    						<td>8</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>3366</td>
+                    						<td>FMC DIALYSIS - ROSEVILLE</td>
+                    						<td>ROSEVILLE</td>
+                    						<td>MN</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>3390</td>
+                    						<td>FRESENIUS MEDICAL CARE - SPIRIT VALLEY</td>
+                    						<td>DULUTH</td>
+                    						<td>MN</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>3421</td>
+                    						<td>PARK RAPIDS DIALYSIS OF DAVITA</td>
+                    						<td>PARK RAPIDS</td>
+                    						<td>MN</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>3535</td>
+                    						<td>DRG HOME THERAPIES</td>
+                    						<td>FAYETTE</td>
+                    						<td>MS</td>
+                    						<td>8</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>3539</td>
+                    						<td>NORTH GULFPORT HOME PROGRAM, LLC</td>
+                    						<td>GULFPORT</td>
+                    						<td>MS</td>
+                    						<td>7</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>3606</td>
+                    						<td>JEFFERSON COUNTY DIALYSIS CENTER</td>
+                    						<td>FESTUS</td>
+                    						<td>MO</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>3659</td>
+                    						<td>FMC - SULLIVAN</td>
+                    						<td>SULLIVAN</td>
+                    						<td>MO</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>3735</td>
+                    						<td>DIALYSIS CLINICS, INC - WEST OMAHA</td>
+                    						<td>OMAHA</td>
+                    						<td>NE</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>3739</td>
+                    						<td>DODGE COUNTY DIALYSIS</td>
+                    						<td>FREMONT</td>
+                    						<td>NE</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>3745</td>
+                    						<td>CORNHUSKER DIALYSIS</td>
+                    						<td>BELLEVUE</td>
+                    						<td>NE</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>3797</td>
+                    						<td>292542 CENTENNIAL DIALYSIS (FMC)</td>
+                    						<td>LAS VEGAS</td>
+                    						<td>NV</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>3839</td>
+                    						<td>FMC HILLSIDE DIALYSIS CTR</td>
+                    						<td>UNION</td>
+                    						<td>NJ</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>3852</td>
+                    						<td>RV WESTWOOD</td>
+                    						<td>WESTWOOD</td>
+                    						<td>NJ</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>3926</td>
+                    						<td>LIBERTY HAMMONTON</td>
+                    						<td>HAMMONTON</td>
+                    						<td>NJ</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>3981</td>
+                    						<td>FMC NEPTUNE</td>
+                    						<td>NEPTUNE</td>
+                    						<td>NJ</td>
+                    						<td>6</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>3982</td>
+                    						<td>MERIDIAN-FRESENIUS DIALYSIS AT BRICK</td>
+                    						<td>BRICK</td>
+                    						<td>NJ</td>
+                    						<td>6</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>3983</td>
+                    						<td>MERIDIAN FRESENIUS DIALYSIS RED BANK</td>
+                    						<td>RED BANK</td>
+                    						<td>NJ</td>
+                    						<td>7</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>4001</td>
+                    						<td>322508 ALAMOGORDO DIALYSIS (FMC)</td>
+                    						<td>ALAMOGORDO</td>
+                    						<td>NM</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>4023</td>
+                    						<td>322533 NORTH RIO RANCHO DIALYSIS (FMC)</td>
+                    						<td>RIO RANCHO</td>
+                    						<td>NM</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>4032</td>
+                    						<td>322542 HOME DIALYSIS OF NEW MEXICO</td>
+                    						<td>ALBUQUERQUE</td>
+                    						<td>NM</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>4037</td>
+                    						<td>322547-THE KIDNEY CARE CENTER, LLC</td>
+                    						<td>HOBBS</td>
+                    						<td>NM</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>4044</td>
+                    						<td>MT. SINAI KIDNEY CTR.</td>
+                    						<td>NEW YORK</td>
+                    						<td>NY</td>
+                    						<td>1</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>4048</td>
+                    						<td>BROOKLYN HOSPITAL CENTER</td>
+                    						<td>BROOKLYN</td>
+                    						<td>NY</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>4056</td>
+                    						<td>KINGSBROOK JEWISH MEDICAL CENTER</td>
+                    						<td>BROOKLYN</td>
+                    						<td>NY</td>
+                    						<td>7</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>4191</td>
+                    						<td>CRD ASSOCIATES LLC  CLIFFSIDE NURSING HOME</td>
+                    						<td>FLUSHING</td>
+                    						<td>NY</td>
+                    						<td>0</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>4197</td>
+                    						<td>EASTCHESTER ROAD DIALYSIS CENTER</td>
+                    						<td>BRONX</td>
+                    						<td>NY</td>
+                    						<td>8</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>4227</td>
+                    						<td>US RENAL CARE CHEEKTOWAGA DIALYSIS</td>
+                    						<td>CHEEKTOWAGA</td>
+                    						<td>NY</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>4233</td>
+                    						<td>MOHAWK VALLEY DIALYSIS CENTER, INC.</td>
+                    						<td>AMSTERDAM</td>
+                    						<td>NY</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>4237</td>
+                    						<td>FMS-SOUTHERN MANHATTAN DIALYSIS CENTER - WAYNE COUNTY</td>
+                    						<td>NEWARK</td>
+                    						<td>NY</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>4243</td>
+                    						<td>JAMESTOWN DIALYSIS CENTER</td>
+                    						<td>JAMESTOWN</td>
+                    						<td>NY</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>4262</td>
+                    						<td>FREEDOM CENTER OF ROCHESTER</td>
+                    						<td>ROCHESTER</td>
+                    						<td>NY</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>4265</td>
+                    						<td>REGENCY DIALYSIS CENTER</td>
+                    						<td>YONKERS</td>
+                    						<td>NY</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>4303</td>
+                    						<td>NASSAU UNIVERSITY MEDICAL CENTER</td>
+                    						<td>UNIONDALE</td>
+                    						<td>NY</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>4311</td>
+                    						<td>KINGSBROOK JEWISH MEDICAL CENTER - RNH DIALYSIS</td>
+                    						<td>BROOKLYN</td>
+                    						<td>NY</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>4314</td>
+                    						<td>FSLH-ST. LUKE'S HOME RENAL DIALYSIS</td>
+                    						<td>UTICA</td>
+                    						<td>NY</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>4367</td>
+                    						<td>DSI CHARLOTTE LATROBE DIALYSIS</td>
+                    						<td>CHARLOTTE</td>
+                    						<td>NC</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>4420</td>
+                    						<td>FUQUAY VARINA KIDNEY CENTER</td>
+                    						<td>FUQUAY VARINA</td>
+                    						<td>NC</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>4454</td>
+                    						<td>FRESENIUS MEDICAL CARE OF SPRING HOPE</td>
+                    						<td>SPRING HOPE</td>
+                    						<td>NC</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>4534</td>
+                    						<td>AURORA DIALYSIS LLC</td>
+                    						<td>GRAND FORKS</td>
+                    						<td>ND</td>
+                    						<td>8</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>4536</td>
+                    						<td>CHI ST ALEXIUS HEALTH - DICKINSON DIALYSIS</td>
+                    						<td>DICKINSON</td>
+                    						<td>ND</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>4537</td>
+                    						<td>CHI ST ALEXIUS HEALTH - WILLISTON DIALYSIS</td>
+                    						<td>WILLISTON</td>
+                    						<td>ND</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>4568</td>
+                    						<td>FMC - CENTRAL OHIO EAST</td>
+                    						<td>COLUMBUS</td>
+                    						<td>OH</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>4594</td>
+                    						<td>FMC - YOUNGSTOWN</td>
+                    						<td>YOUNGSTOWN</td>
+                    						<td>OH</td>
+                    						<td>8</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>4604</td>
+                    						<td>FMC - OHIO RENAL CARE GROUP HOME DIALYSIS PROGRAM</td>
+                    						<td>CLEVELAND</td>
+                    						<td>OH</td>
+                    						<td>8</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>4605</td>
+                    						<td>FMC - DIALYSIS SPECIALISTS OF MARIETTA</td>
+                    						<td>MARIETTA</td>
+                    						<td>OH</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>4608</td>
+                    						<td>FMC - DIALYSIS SPECIALISTS OF FAIRFIELD</td>
+                    						<td>FAIRFIELD</td>
+                    						<td>OH</td>
+                    						<td>8</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>4610</td>
+                    						<td>CENTER FOR DIALYSIS CARE HOME CARE, LTD.</td>
+                    						<td>EUCLID</td>
+                    						<td>OH</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>4681</td>
+                    						<td>DAVITA HOME DIALYSIS SERVICES OF SANDUSKY, INC.</td>
+                    						<td>SANDUSKY</td>
+                    						<td>OH</td>
+                    						<td>6</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>4727</td>
+                    						<td>U.S. RENAL CARE OF DELAWARE</td>
+                    						<td>DELAWARE</td>
+                    						<td>OH</td>
+                    						<td>8</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>4782</td>
+                    						<td>FMC CREIGHTON DIALYSIS LLC</td>
+                    						<td>FINDLAY</td>
+                    						<td>OH</td>
+                    						<td>7</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>4786</td>
+                    						<td>DAVITA - PARKSIDE DIALYSIS</td>
+                    						<td>WESTERVILLE</td>
+                    						<td>OH</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>4790</td>
+                    						<td>FMC- WILMINGTON HOME</td>
+                    						<td>WILMINGTON</td>
+                    						<td>OH</td>
+                    						<td>1</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>4818</td>
+                    						<td>DAVITA  -  CANAL WINCHESTER</td>
+                    						<td>CANAL WINCHESTER</td>
+                    						<td>OH</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>4833</td>
+                    						<td>INFINITI DIALYSIS CENTER OF CINCINNATI, LLC</td>
+                    						<td>CINCINNATI</td>
+                    						<td>OH</td>
+                    						<td>8</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>4896</td>
+                    						<td>FMCNA - ENID DIALYSIS CTR</td>
+                    						<td>ENID</td>
+                    						<td>OK</td>
+                    						<td>8</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>4902</td>
+                    						<td>MCALESTER REGIONAL DIALYSIS CTR</td>
+                    						<td>MCALESTER</td>
+                    						<td>OK</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>4985</td>
+                    						<td>BLUE MOUNTAIN KIDNEY CENTER</td>
+                    						<td>PENDLETON</td>
+                    						<td>OR</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>5008</td>
+                    						<td>GEISINGER HEALTH SYSTEM</td>
+                    						<td>DANVILLE</td>
+                    						<td>PA</td>
+                    						<td>7</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>5010</td>
+                    						<td>M.S. HERSHEY MEDICAL CENTER</td>
+                    						<td>HERSHEY</td>
+                    						<td>PA</td>
+                    						<td>5</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>5039</td>
+                    						<td>DAVITA WEST SHORE</td>
+                    						<td>LEMOYNE</td>
+                    						<td>PA</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>5048</td>
+                    						<td>BELMONT COURT DIALYSIS - DOYLESTOWN CAMPUS</td>
+                    						<td>DOYLESTOWN</td>
+                    						<td>PA</td>
+                    						<td>8</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>5059</td>
+                    						<td>LEBANON COUNTY DIALYSIS</td>
+                    						<td>LEBANON</td>
+                    						<td>PA</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>5084</td>
+                    						<td>FRESENIUS MEDICAL CARE SHADYSIDE</td>
+                    						<td>PITTSBURGH</td>
+                    						<td>PA</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>5198</td>
+                    						<td>PRODIGY DIALYSIS, LLC - RICHLAND SQUARE</td>
+                    						<td>JOHNSTOWN</td>
+                    						<td>PA</td>
+                    						<td>0</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>5213</td>
+                    						<td>FRESENIUS MEDICAL CARE CAMP HILL</td>
+                    						<td>CAMP HILL</td>
+                    						<td>PA</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>5264</td>
+                    						<td>PRODIGY DIALYSIS - SOMERSET</td>
+                    						<td>SOMERSET</td>
+                    						<td>PA</td>
+                    						<td>0</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>5290</td>
+                    						<td>BIO MEDICAL APPLICATIONS OF PENNSYLVANIA, INC.</td>
+                    						<td>TOWANDA</td>
+                    						<td>PA</td>
+                    						<td>6</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>5291</td>
+                    						<td>BIO MEDICAL APPLICATION OF PENNSYLVANIA, INC.</td>
+                    						<td>SAYRE</td>
+                    						<td>PA</td>
+                    						<td>4</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>5336</td>
+                    						<td>DCI AZALEA PLACE</td>
+                    						<td>CHARLESTON</td>
+                    						<td>SC</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>5344</td>
+                    						<td>CENTRAL BAMBERG DIALYSIS</td>
+                    						<td>BAMBERG</td>
+                    						<td>SC</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>5357</td>
+                    						<td>FMC HILTON HEAD DIALYSIS CENTER</td>
+                    						<td>HILTON HEAD ISLAND</td>
+                    						<td>SC</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>5373</td>
+                    						<td>FMC DIALYSIS SERVICES MURRELLS INLET</td>
+                    						<td>MURRELLS INLET</td>
+                    						<td>SC</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>5380</td>
+                    						<td>PALMETTO DIALYSIS</td>
+                    						<td>CLINTON</td>
+                    						<td>SC</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>5432</td>
+                    						<td>COAST DIALYSIS, LLC</td>
+                    						<td>CHARLESTON</td>
+                    						<td>SC</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>5439</td>
+                    						<td>CURLEW DIALYSIS, LLC</td>
+                    						<td>MCCOLL</td>
+                    						<td>SC</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>5449</td>
+                    						<td>FRESENIUS MEDICAL CARE CNA KIDNEY CENTERS, LLC</td>
+                    						<td>SUMTER</td>
+                    						<td>SC</td>
+                    						<td>8</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>5461</td>
+                    						<td>CLINTON DIALYSIS CLINIC</td>
+                    						<td>CLINTON</td>
+                    						<td>SC</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>5466</td>
+                    						<td>REGIONAL DIALYSIS CENTER</td>
+                    						<td>RAPID CITY</td>
+                    						<td>SD</td>
+                    						<td>0</td>
+                    						<td>9</td>
+                    					</tr>
+                    					<tr>
+                    						<td>5470</td>
+                    						<td>REGIONAL DIALYSIS CENTER - RCRH</td>
+                    						<td>RAPID CITY</td>
+                    						<td>SD</td>
+                    						<td>4</td>
+                    						<td>9</td>
+                    					</tr>
+                    					<tr>
+                    						<td>5482</td>
+                    						<td>REGIONAL DIALYSIS CENTER - SPEARFISH</td>
+                    						<td>SPEARFISH</td>
+                    						<td>SD</td>
+                    						<td>0</td>
+                    						<td>9</td>
+                    					</tr>
+                    					<tr>
+                    						<td>5573</td>
+                    						<td>DCI HOME TRAINING OF MIDDLE TN</td>
+                    						<td>NASHVILLE</td>
+                    						<td>TN</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>5579</td>
+                    						<td>DIALYSIS ASSOC. OF MURFREESBORO-HT</td>
+                    						<td>MURFREESBORO</td>
+                    						<td>TN</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>5659</td>
+                    						<td>NXKC MEMPHIS, LLC</td>
+                    						<td>GERMANTOWN</td>
+                    						<td>TN</td>
+                    						<td>8</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>5675</td>
+                    						<td>WILBARGER GENERAL HOSPITAL DIALYSIS OF VERNON</td>
+                    						<td>VERNON</td>
+                    						<td>TX</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>5683</td>
+                    						<td>FRESENIUS MEDICAL CARE PD SERVICES OF DALLAS</td>
+                    						<td>DALLAS</td>
+                    						<td>TX</td>
+                    						<td>7</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>5737</td>
+                    						<td>KIDNEY DISEASE CLINIC OF CENTRAL SAN ANTONIO</td>
+                    						<td>SAN ANTONIO</td>
+                    						<td>TX</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>5749</td>
+                    						<td>AMERI-TECH KIDNEY CENTER-ARLINGTON LLC</td>
+                    						<td>ARLINGTON</td>
+                    						<td>TX</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>5935</td>
+                    						<td>USRC TARRANT DIALYSIS CENTER - GRAND PRAIRIE</td>
+                    						<td>GRAND PRAIRIE</td>
+                    						<td>TX</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>5949</td>
+                    						<td>SUGARLAND DIALYSIS</td>
+                    						<td>SUGAR LAND</td>
+                    						<td>TX</td>
+                    						<td>6</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>5956</td>
+                    						<td>BEECHNUT DIALYSIS</td>
+                    						<td>HOUSTON</td>
+                    						<td>TX</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>5976</td>
+                    						<td>SCOTT & WHITE KILLEEN DIALYSIS CENTER</td>
+                    						<td>KILLEEN</td>
+                    						<td>TX</td>
+                    						<td>0</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>5977</td>
+                    						<td>SCOTT & WHITE ARTIFICAL KIDNEY UNIT</td>
+                    						<td>TEMPLE</td>
+                    						<td>TX</td>
+                    						<td>0</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>5978</td>
+                    						<td>SCOTT & WHITE ROUND ROCK DIALYSIS CENTER</td>
+                    						<td>ROUND ROCK</td>
+                    						<td>TX</td>
+                    						<td>0</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>5980</td>
+                    						<td>SCOTT & WHITE KILLEEN DIALYSIS WEST</td>
+                    						<td>KILLEEN</td>
+                    						<td>TX</td>
+                    						<td>0</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>5992</td>
+                    						<td>US RENAL CARE HOUSTON STREET DIALYSIS</td>
+                    						<td>SAN ANTONIO</td>
+                    						<td>TX</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>6011</td>
+                    						<td>LIBERTY DIALYSIS - LANCASTER</td>
+                    						<td>LANCASTER</td>
+                    						<td>TX</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>6044</td>
+                    						<td>FRESENIUS MEDICAL CARE HOUSTON HOME</td>
+                    						<td>HOUSTON</td>
+                    						<td>TX</td>
+                    						<td>4</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>6069</td>
+                    						<td>LIBERTY DIALYSIS - MESQUITE</td>
+                    						<td>MESQUITE</td>
+                    						<td>TX</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>6071</td>
+                    						<td>CEDAR PARK DIALYSIS CENTER</td>
+                    						<td>CEDAR PARK</td>
+                    						<td>TX</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>6079</td>
+                    						<td>LIBERTY DIALYSIS - DUNCANVILLE</td>
+                    						<td>DUNCANVILLE</td>
+                    						<td>TX</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>6081</td>
+                    						<td>FRESENIUS MEDICAL CARE BRAZOS</td>
+                    						<td>ROSENBERG</td>
+                    						<td>TX</td>
+                    						<td>7</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>6119</td>
+                    						<td>STAFFORD DIALYSIS</td>
+                    						<td>STAFFORD</td>
+                    						<td>TX</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>6120</td>
+                    						<td>GESSNER DIALYSIS AND KIDNEY CENTER</td>
+                    						<td>HOUSTON</td>
+                    						<td>TX</td>
+                    						<td>8</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>6156</td>
+                    						<td>BRAZORIA COUNTY DIALYSIS, LLP</td>
+                    						<td>LAKE JACKSON</td>
+                    						<td>TX</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>6175</td>
+                    						<td>HUMBLE DIALYSIS, LP</td>
+                    						<td>HUMBLE</td>
+                    						<td>TX</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>6177</td>
+                    						<td>LIBERTY DIALYSIS LAKE LEWISVILLE</td>
+                    						<td>CORINTH</td>
+                    						<td>TX</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>6190</td>
+                    						<td>KIDNEY CARE CENTER</td>
+                    						<td>LUBBOCK</td>
+                    						<td>TX</td>
+                    						<td>8</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>6199</td>
+                    						<td>CENTRAL FORT WORTH DIALYSIS</td>
+                    						<td>FORT WORTH</td>
+                    						<td>TX</td>
+                    						<td>7</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>6216</td>
+                    						<td>LIBERTY DIALYSIS - RICHARDSON</td>
+                    						<td>RICHARDSON</td>
+                    						<td>TX</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>6222</td>
+                    						<td>COMPLETE DIALYSIS CARE, LLC</td>
+                    						<td>ODESSA</td>
+                    						<td>TX</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>6227</td>
+                    						<td>LIBERTY DIALYSIS - CHARLTON</td>
+                    						<td>DALLAS</td>
+                    						<td>TX</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>6236</td>
+                    						<td>FRESENIUS MEDICAL CARE BAYTOWN NORTH</td>
+                    						<td>BAYTOWN</td>
+                    						<td>TX</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>6282</td>
+                    						<td>462510 CASTLEVIEW DIALYSIS</td>
+                    						<td>PRICE</td>
+                    						<td>UT</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>6283</td>
+                    						<td>462511 DIXIE DIALYSIS CENTER</td>
+                    						<td>SAINT GEORGE</td>
+                    						<td>UT</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>6284</td>
+                    						<td>462518 SOUTH VALLEY DIALYSIS CENTER</td>
+                    						<td>SANDY</td>
+                    						<td>UT</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>6285</td>
+                    						<td>462519 BONNEVILLE DIALYSIS CENTER</td>
+                    						<td>OGDEN</td>
+                    						<td>UT</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>6296</td>
+                    						<td>462535 LONE PEAK DIALYSIS (DVA)</td>
+                    						<td>AMERICAN FORK</td>
+                    						<td>UT</td>
+                    						<td>8</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>6304</td>
+                    						<td>462543 PAYSON REGIONAL DIALYSIS</td>
+                    						<td>PAYSON</td>
+                    						<td>UT</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>6366</td>
+                    						<td>BMA - BLUE RIDGE</td>
+                    						<td>BEDFORD</td>
+                    						<td>VA</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>6407</td>
+                    						<td>PORTSMOUTH DIALYSIS CENTER</td>
+                    						<td>PORTSMOUTH</td>
+                    						<td>VA</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>6418</td>
+                    						<td>FOREST PARK DIALYSIS CENTER</td>
+                    						<td>RICHMOND</td>
+                    						<td>VA</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>6539</td>
+                    						<td>SPOKANE VALLEY RENAL CENTER</td>
+                    						<td>SPOKANE</td>
+                    						<td>WA</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>6608</td>
+                    						<td>WEST VIRGINIA DIALYSIS</td>
+                    						<td>LOGAN</td>
+                    						<td>WV</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>6628</td>
+                    						<td>FMC - APPALACHIAN DIALYSIS</td>
+                    						<td>BECKLEY</td>
+                    						<td>WV</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>6641</td>
+                    						<td>LAKEVIEW MEDICAL CENTER</td>
+                    						<td>RICE LAKE</td>
+                    						<td>WI</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>6643</td>
+                    						<td>BELOIT HEALTH SYSTEM - DIALYSIS</td>
+                    						<td>BELOIT</td>
+                    						<td>WI</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>6665</td>
+                    						<td>PURITY DIALYSIS - MUKWONAGO</td>
+                    						<td>MUKWONAGO</td>
+                    						<td>WI</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>6680</td>
+                    						<td>DAVITA - LAKE GENEVA DIALYSIS</td>
+                    						<td>LAKE GENEVA</td>
+                    						<td>WI</td>
+                    						<td>8</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>6721</td>
+                    						<td>DAVITA - NORTHERN STAR DIALYSIS</td>
+                    						<td>WOODRUFF</td>
+                    						<td>WI</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>6727</td>
+                    						<td>DAVITA - WAUSAU DIALYSIS</td>
+                    						<td>WAUSAU</td>
+                    						<td>WI</td>
+                    						<td>8</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td>6731</td>
+                    						<td>PURITY HOME TRAINING CENTER</td>
+                    						<td>DELAFIELD</td>
+                    						<td>WI</td>
+                    						<td>9</td>
+                    						<td>10</td>
+                    					</tr>
+                    					<tr>
+                    						<td></td>
+                    						<td>&nbsp</td>
+                    						<td>&nbsp</td>
+                    						<td>&nbsp</td>
+                    						<td>&nbsp</td>
+                    						<td>&nbsp</td>
+                    					</tr>
+                    				</tbody>
+                    			</table>
+                        </div>
+                    </div>
+                  </div>
+
+
+										<div class="wow bounceInUp">
+										                  <h3>Cuong Huynh | Erica Rosa | Jensen Binoji | Ted Stagner</h3>
+										                  </div>
+
+
+
+
+    <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"> </script>
+    <script type="text/javascript" src="../static/js/app.js"></script>
+		<script type="text/javascript" src="../static/js/config.js"></script>
+    <script type="text/javascript" src="../static/js/logic.js"></script>
+
+
+
+
+
+
+
+
+
+</body>
+
+</html>
