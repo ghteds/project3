@@ -43,6 +43,11 @@ def angular():
     #return anguluar.html
     return render_template('angular.html')
 
+@app.route("/test2")
+def test2():
+    #return anguluar.html
+    return render_template('test2.html')
+
 @app.route('/anemia')
 def anemia():
     result=db.session.query(Anemia).statement
@@ -50,7 +55,7 @@ def anemia():
     df = pd.read_sql_query(result, db.session.bind)
 
     data = {
-        'FacilityName': df['FacilityName'].tolist(),
+        'Facility': df['FacilityName'].tolist(),
         'CCN':df['CCN'].tolist(),
         'City':df['City'].tolist(),
         'State':df['State'].tolist(),
@@ -60,8 +65,8 @@ def anemia():
         'NationalAvg':df['NationalAvg'].tolist(),
         'ZipLat':df['ZipLat'].tolist(),
         'ZipLon':df['ZipLon'].tolist(),
-        'StateLat':df['StateLat'].tolist(),
-        'StateLon':df['StateLon'].tolist()
+        # 'StateLat':df['StateLat'].tolist(),
+        # 'StateLon':df['statelon'].tolist()
     }
     
     return  jsonify(data)
@@ -75,7 +80,7 @@ def testanemia():
     data = {
         'Facility': ["SAN FRANCISCO DIALYSIS CENTER","CITRUS DIALYSIS CENTER","RAI PERALTA"],    
         'State':['CA','TX','GA'],        
-        'AnemiaScore': [10,10,10]        
+        'Score': [10,10,10]        
     }
     
     return  jsonify(data)
@@ -109,9 +114,7 @@ def states():
     # print(result)
     # df = pd.read_sql_query(result, columns=['State']) #db.session.bind)
     # print(df)
-    data = {
-        'State':result,       
-    }    
+      
     return  jsonify(result)
 @app.route('/teststates')
 def teststates():
@@ -120,7 +123,7 @@ def teststates():
     # df = pd.read_sql_query(result, columns=['State']) #db.session.bind)
     # print(df)
     data = {
-        'State':result,       
+        'State':result       
     }    
     return  jsonify(result)
 
