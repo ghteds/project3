@@ -1,121 +1,151 @@
 <!DOCTYPE html>
-<html lang="en">
+<style>
+  
+svg {
+ font: 16px"Avenir";
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Health Dashboard</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-        crossorigin="anonymous">
-    <link rel="stylesheet" href="main.css">
-</head>
-
-<body>
-    <nav class="navbar navbar-default">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
-                    aria-expanded="false">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="index.html">Health Dashboard </a>
-            </div>
-
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav navbar-right">
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Measures
-                            <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a href="anemia.html">Anemia Measure</a>
-                            </li>
-                            <li>
-                                <a href="depression.html">Depression Measure</a>
-                            </li>
-                        
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="analogy.html">Analogy</a>
-                    </li>
-                    
-                </ul>
-            </div>
-
-        
-    </nav>
+}
+  
+  div.tooltip {	
+    position: absolute;			
+    text-align: center;			
+    width: 60px;					
+    height: 45px;					
+    padding: 2px;				
+    font: 12px sans-serif;		
+    background: lightsteelblue;	
+    border: 0px;		
+    border-radius: 8px;			
+    pointer-events: none;			
+  }
 
 
-    <div class="container">
-        <div class="row row-grid">
-            <div class="col-md-8">
-                <div class="box box-left">
-                    <section id="intro">
-                        <h1>About</h1>
-                        <hr>
-                        <figure>
-                            <a target="_blank" href="Fig1.png">
-                                <img id="health-sample" src="Fig1.png" alt="Family health">
-                            </a>
-                        </figure>
-
-                        <section id="Summary">
-                                <p>   
-                                    
-                                    </p>
-                            <p>    What is ESRD QIP ?
-                            </p>
-
-                            <p>  The Centers for Medicare & Medicaid Services (CMS) administers the End-Stage Renal Disease (ESRD) Quality Incentive Program (QIP) to promote high-quality services in outpatient dialysis facilities treating patients with ESRD. 
-                                     The first of its kind in Medicare, this program changes the way CMS pays for the treatment of  patients with ESRD by linking a portion of payment directly to facilities’ performance on quality of care measures. 
-                                     These types of programs are known as “pay-for-performance” or “value-based purchasing” (VBP) programs. 
-
-                            </p>
-
-                            <p>  What are the benefits of ESRD QIP?
-                           </p>
-
-                           <p> The ESRD QIP will reduce payments to ESRD facilities that do not meet or exceed certain performance standards. The maximum payment reduction CMS can apply to any facility is two percent. This reduction will apply to all payments for services performed by the facility receiving the reduction during the applicable payment year (PY).
-
-                                Payment reductions result when a facility’s overall score on applicable measures does not meet established standards.
-                                 CMS publicly reports facility ESRD QIP scores; these scores are available online on Dialysis Facility Compare.
-                                  In addition, each facility is required to display a Performance Score Certificate that lists its Total Performance Score, as well as its performance on each of the quality measures identified for that year.
-                            </p>
-
-                            
-                                               
-                        </section>
-
-                    </section>
-                </div>
-            </div>
-
-           
-            <div class="col-md-4">
-                <div class="box box-right">
-                    <h2>Visualizations</h2>
-                    <hr>
-
-                    
-                    
-
-        </div>
-    </div>
+</style>
+<svg width="960" height="960" font-family="sans-serif" font-size="10" text-anchor="middle"></svg>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script>
 
 
+  
+var svg = d3.select("svg"),
+    width = +svg.attr("width"),
+    height = +svg.attr("height");
 
-    <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
+  // Define the div for the tooltip
+var div = d3.select("body").append("div")	
+    .attr("class", "tooltip")				
+    .style("opacity", 0);
 
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-        crossorigin="anonymous">
-        </script>
+  
+  svg.append("text")
+    .attr("x", 100)   
+    .attr("y", 20 )
+    .attr("dy", "3.5em" )
+    .attr("text-anchor", "start")  
+    .style("font-size", "28px")  
+  	.style("font-weight", "bold")
+    .text("Alabama Anemia Score 2018 ")
 
-</body>
+var pack = d3.pack()
+    .size([width-150, height])
+    .padding(1.5);
 
-</html>
+d3.csv("anemia.csv", function(d) {
+  d.value = +d["Count"];
+  d.Call_Type = d["Call_type"]
+
+ 	return d;
+}, function(error, data) {
+  if (error) throw error;
+
+  
+ 
+  var color = d3.scaleOrdinal()
+  .domain(data.map(function(d){ return d.Call_Type;}))
+  .range(['#fbb4ae','#b3cde3','#ccebc5','#decbe4','#fed9a6',
+  '#ffe9a8','#b9bfe3','#fddaec','#cccccc']);
+  
+  var root = d3.hierarchy({children: data})
+      .sum(function(d) { return d.value; })
+
+  var node = svg.selectAll(".node")
+    .data(pack(root).leaves())
+    .enter().append("g")
+      .attr("class", "node")
+      .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+ 
+  
+  node.append("circle")
+      .attr("id", function(d) { return d.id; })
+      .attr("r", function(d) { return d.r; })
+      .style("fill", function(d) { return color(d.data.Call_Type); })
+      .on("mouseover", function(d) {		
+    div.transition()		
+      .duration(200)		
+      .style("opacity", .9);	
+    
+      var duration = 300;
+  data.forEach(function(d, i) {
+    console.log(d.value);
+    node.transition().duration(duration).delay(i * duration)
+        .attr("r", d.value);
+});
+     
+    
+    div.html(d.data.Call_Type + ": <br>"+d.data.value  )	
+      .style("left", (d3.event.pageX) + "px")		
+      .style("top", (d3.event.pageY - 28) + "px");	
+  })					
+    .on("mouseout", function(d) {		
+    div.transition()		
+      .duration(500)		
+      .style("opacity", 0);	
+  });
+
+  
+  
+   node.append("text")
+      .text(function(d) {
+     if (d.data.value > 50|| d.data.Call_Type == "Ten" || d.data.Call_Type == "NoScore"){
+       return d.data.Call_Type;
+     }
+     return "";});
+  
+  
+
+  var legend = svg.selectAll(".legend")
+  .data(data).enter()
+  .append("g")
+  .attr("class","legend")
+  .attr("transform", "translate(" + 780 + "," + 120+ ")");
+     
+ 
+   legend.append("rect")
+     .attr("x", 0) 
+     .attr("y", function(d, i) { return 20 * i; })
+     .attr("width", 15)
+     .attr("height", 15)
+		.style("fill", function(d) { return color(d.Call_Type)});
+   
+
+    legend.append("text")
+     .attr("x", 25) 
+    	.attr("text-anchor", "start")
+     .attr("dy", "1em") 
+     .attr("y", function(d, i) { return 20 * i; })
+     .text(function(d) {return d.Call_Type;})
+    .attr("font-size", "12px"); 
+  
+      
+    legend.append("text")
+     .attr("x",31) 
+     .attr("dy", "-.2em")
+     .attr("y",-10)
+     .text("Call Type")
+  	.attr("font-size", "17px"); 
+
+  
+  
+});
+
+</script>
